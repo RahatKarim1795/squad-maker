@@ -28,6 +28,20 @@ export default function Home() {
     }
   };
   
+  const handleRegenerate = () => {
+    if (selectedPlayers.length < 2) return;
+    
+    try {
+      // Shuffle the players array to get a potentially different distribution
+      const shuffledPlayers = [...selectedPlayers].sort(() => Math.random() - 0.5);
+      const generatedTeams = balanceTeams(shuffledPlayers);
+      setTeams(generatedTeams);
+    } catch (error) {
+      console.error('Failed to regenerate teams:', error);
+      alert('Failed to regenerate teams. Please try again.');
+    }
+  };
+  
   const handleReset = () => {
     setTeams(null);
   };
@@ -44,6 +58,7 @@ export default function Home() {
           <TeamDisplay 
             teams={teams} 
             onReset={handleReset} 
+            onRegenerate={handleRegenerate}
           />
         ) : (
           <PlayerSelection 

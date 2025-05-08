@@ -7,9 +7,10 @@ import { useState } from 'react';
 interface TeamDisplayProps {
   teams: [Team, Team];
   onReset: () => void;
+  onRegenerate: () => void;
 }
 
-const TeamDisplay = ({ teams, onReset }: TeamDisplayProps) => {
+const TeamDisplay = ({ teams, onReset, onRegenerate }: TeamDisplayProps) => {
   const [teamA, teamB] = teams;
   const [showStats, setShowStats] = useState(false);
   
@@ -42,10 +43,18 @@ const TeamDisplay = ({ teams, onReset }: TeamDisplayProps) => {
             </button>
             
             <button
+              onClick={onRegenerate}
+              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md text-sm font-medium"
+              title="Create new teams with the same players"
+            >
+              Regenerate Teams
+            </button>
+            
+            <button
               onClick={onReset}
               className="px-4 py-2 bg-slate-700 hover:bg-slate-800 text-white rounded-md text-sm font-medium"
             >
-              Reset & Make New Teams
+              Reset & Select Players
             </button>
           </div>
         </div>

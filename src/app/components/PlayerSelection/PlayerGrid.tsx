@@ -3,17 +3,28 @@
 import { Player, Position } from '@/types';
 import { useState } from 'react';
 import PlayerCard from './PlayerCard';
+import GuestPlayerCard from './GuestPlayerCard';
 
 interface PlayerGridProps {
   players: Player[];
+  guestPlayers: Player[];
   onSelectPlayer: (playerId: string, isSelected: boolean) => void;
+  onAddGuestPlayer: (player: Player) => void;
 }
 
-const PlayerGrid = ({ players, onSelectPlayer }: PlayerGridProps) => {
+const PlayerGrid = ({ 
+  players, 
+  guestPlayers,
+  onSelectPlayer, 
+  onAddGuestPlayer 
+}: PlayerGridProps) => {
   const [positionFilter, setPositionFilter] = useState<Position | 'All'>('All');
   const [searchTerm, setSearchTerm] = useState('');
   
-  const filteredPlayers = players.filter(player => {
+  // Combine regular and guest players for filtering
+  const allPlayers = [...players, ...guestPlayers];
+  
+  const filteredPlayers = allPlayers.filter(player => {
     // Apply position filter
     const matchesPosition = positionFilter === 'All' || player.positions.includes(positionFilter as Position);
     
@@ -77,6 +88,15 @@ const PlayerGrid = ({ players, onSelectPlayer }: PlayerGridProps) => {
         </div>
       </div>
       
+      {/* Guest player count, if any */}
+      {guestPlayers.length > 0 && (
+        <div className="bg-amber-50 border border-amber-200 p-2 rounded-lg mb-4">
+          <p className="text-amber-800 text-sm">
+            <span className="font-semibold">{guestPlayers.length}</span> guest player{guestPlayers.length !== 1 ? 's' : ''} added
+          </p>
+        </div>
+      )}
+      
       {/* Grid of players */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {filteredPlayers.map(player => (
@@ -86,6 +106,9 @@ const PlayerGrid = ({ players, onSelectPlayer }: PlayerGridProps) => {
             onSelect={onSelectPlayer}
           />
         ))}
+        
+        {/* Add the Guest Player Card */}
+        <GuestPlayerCard onAddGuestPlayer={onAddGuestPlayer} />
       </div>
       
       {/* Show message if no players match the filter */}

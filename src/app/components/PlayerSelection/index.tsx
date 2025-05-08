@@ -12,6 +12,7 @@ interface PlayerSelectionProps {
 
 const PlayerSelection = ({ initialPlayers, onGenerateTeams }: PlayerSelectionProps) => {
   const [players, setPlayers] = useState<Player[]>([]);
+  const [guestPlayers, setGuestPlayers] = useState<Player[]>([]);
   
   // Load player data and apply selected status from localStorage on initial render
   useEffect(() => {
@@ -20,21 +21,41 @@ const PlayerSelection = ({ initialPlayers, onGenerateTeams }: PlayerSelectionPro
   
   // Handle player selection/deselection
   const handleSelectPlayer = (playerId: string, isSelected: boolean) => {
-    const updatedPlayers = players.map(player => 
-      player.id === playerId ? { ...player, isSelected } : player
-    );
-    
-    setPlayers(updatedPlayers);
-    saveSelectedPlayers(updatedPlayers);
+    // Check if it's a guest player by the ID prefix
+    if (playerId.startsWith('guest-')) {
+      const updatedGuestPlayers = guestPlayers.map(player => 
+        player.id === playerId ? { ...player, isSelected } : player
+      );
+      setGuestPlayers(updatedGuestPlayers);
+    } else {
+      const updatedPlayers = players.map(player => 
+        player.id === playerId ? { ...player, isSelected } : player
+      );
+      
+      setPlayers(updatedPlayers);
+      saveSelectedPlayers(updatedPlayers);
+    }
   };
   
-  // Get count of selected players
-  const selectedCount = players.filter(p => p.isSelected).length;
+  // Handle adding a guest player
+  const handleAddGuestPlayer = (player: Player) => {
+    setGuestPlayers([...guestPlayers, player]);
+  };
+  
+  // Get count of selected players (including guests)
+  const selectedRegularPlayers = players.filter(p => p.isSelected);
+  const selectedGuestPlayers = guestPlayers.filter(p => p.isSelected);
+  const selectedCount = selectedRegularPlayers.length + selectedGuestPlayers.length;
   
   // Handle form submission
   const handleGenerateTeams = () => {
-    const selectedPlayers = players.filter(p => p.isSelected);
-    onGenerateTeams(selectedPlayers);
+    const allSelectedPlayers = [
+      ...selectedRegularPlayers,
+      ...selectedGuestPlayers
+    ];
+    
+    if (allSelectedPlayers.length < 2) return;
+    onGenerateTeams(allSelectedPlayers);
   };
   
   return (
@@ -46,7 +67,9 @@ const PlayerSelection = ({ initialPlayers, onGenerateTeams }: PlayerSelectionPro
         
         <PlayerGrid 
           players={players} 
+          guestPlayers={guestPlayers}
           onSelectPlayer={handleSelectPlayer} 
+          onAddGuestPlayer={handleAddGuestPlayer}
         />
       </div>
       
@@ -59,6 +82,11 @@ const PlayerSelection = ({ initialPlayers, onGenerateTeams }: PlayerSelectionPro
                 {selectedCount}
               </span>
               players selected
+              {guestPlayers.length > 0 && (
+                <span className="ml-2 text-sm text-amber-600">
+                  (including {guestPlayers.filter(p => p.isSelected).length} guests)
+                </span>
+              )}
             </span>
             {selectedCount < 2 && (
               <p className="text-red-600 text-sm mt-1">Select at least 2 players to continue</p>
@@ -69,7 +97,9 @@ const PlayerSelection = ({ initialPlayers, onGenerateTeams }: PlayerSelectionPro
             <button
               onClick={() => {
                 const allSelected = players.map(p => ({ ...p, isSelected: true }));
+                const allGuestsSelected = guestPlayers.map(p => ({ ...p, isSelected: true }));
                 setPlayers(allSelected);
+                setGuestPlayers(allGuestsSelected);
                 saveSelectedPlayers(allSelected);
               }}
               className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-md text-sm font-medium"
@@ -80,13 +110,26 @@ const PlayerSelection = ({ initialPlayers, onGenerateTeams }: PlayerSelectionPro
             <button
               onClick={() => {
                 const noneSelected = players.map(p => ({ ...p, isSelected: false }));
+                const noGuestsSelected = guestPlayers.map(p => ({ ...p, isSelected: false }));
                 setPlayers(noneSelected);
+                setGuestPlayers(noGuestsSelected);
                 saveSelectedPlayers(noneSelected);
               }}
               className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-md text-sm font-medium"
             >
               Clear All
             </button>
+            
+            {guestPlayers.length > 0 && (
+              <button
+                onClick={() => {
+                  setGuestPlayers([]);
+                }}
+                className="px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-md text-sm font-medium"
+              >
+                Remove Guests
+              </button>
+            )}
             
             <button
               onClick={handleGenerateTeams}

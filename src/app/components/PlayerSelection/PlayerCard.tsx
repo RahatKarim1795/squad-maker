@@ -9,6 +9,7 @@ interface PlayerCardProps {
 
 const PlayerCard = ({ player, onSelect }: PlayerCardProps) => {
   const isSelected = player.isSelected || false;
+  const isGuest = player.isGuest || false;
   
   const handleToggle = () => {
     const newValue = !isSelected;
@@ -40,6 +41,7 @@ const PlayerCard = ({ player, onSelect }: PlayerCardProps) => {
         relative p-4 border-2 rounded-lg shadow-md transition-all
         ${getRatingColor(player.rating)}
         ${isSelected ? 'bg-slate-100' : 'bg-white'}
+        ${isGuest ? 'border-dashed' : ''}
         hover:shadow-lg cursor-pointer
       `}
       onClick={handleToggle}
@@ -49,14 +51,23 @@ const PlayerCard = ({ player, onSelect }: PlayerCardProps) => {
         <div className={`w-5 h-5 rounded-full border ${isSelected ? 'bg-emerald-600 border-emerald-700' : 'bg-gray-200 border-gray-300'}`}></div>
       </div>
       
+      {/* Guest badge */}
+      {isGuest && (
+        <div className="absolute top-2 left-2">
+          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800">
+            Guest
+          </span>
+        </div>
+      )}
+      
       {/* Player name */}
-      <h3 className="text-lg font-bold mb-1 text-slate-800">{player.name}</h3>
+      <h3 className={`text-lg font-bold mb-1 text-slate-800 ${isGuest ? 'mt-4' : ''}`}>{player.name}</h3>
       
       {/* Rating */}
       <div className="flex items-center mb-2">
         <span className="text-sm font-medium mr-1 text-slate-700">Rating:</span>
         <div className="flex items-center">
-          <span className="text-sm font-bold text-slate-800 mr-2">{player.rating}/10</span>
+          <span className="text-sm font-bold text-slate-800 mr-2">{player.rating.toFixed(1)}/10</span>
           <div className="flex">
             {[...Array(5)].map((_, i) => (
               <div 
