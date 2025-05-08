@@ -1,0 +1,39 @@
+squad-maker/
+├── src/                         # Source directory
+│   ├── app/                     # Next.js app directory (App Router)
+│   │   ├── page.tsx             # Home page with player selection
+│   │   ├── layout.tsx           # Root layout component
+│   │   ├── globals.css          # Global styles and Tailwind imports
+│   │   ├── teams/               # Teams display route
+│   │   │   └── page.tsx         # Page showing generated teams
+│   │   ├── components/          # Reusable UI components
+│   │   │   ├── PlayerSelection/
+│   │   │   │   ├── PlayerCard.tsx # Individual player card component
+│   │   │   │   ├── PlayerGrid.tsx # Grid of available players
+│   │   │   │   └── index.tsx    # Main player selection component
+│   │   │   ├── TeamGeneration/
+│   │   │   │   ├── TeamDisplay.tsx # Shows teams after generation
+│   │   │   │   ├── TeamCard.tsx   # Individual team card
+│   │   │   │   └── PlayerBadge.tsx # Player item within a team
+│   │   │   └── UI/              # Generic UI components
+│   │   │       ├── Button.tsx   # Reusable button component
+│   │   │       ├── Header.tsx   # Page header component
+│   │   │       └── Container.tsx # Layout container component
+│   │   ├── lib/                 # Utility functions
+│   │   │   ├── teamBalancer.ts  # Algorithm for team balancing
+│   │   │   └── localStorage.ts  # Functions to save/load from localStorage
+│   │   └── data/                # Static data
+│   │       └── players.ts       # Player database as static array
+│   └── types/                   # TypeScript type definitions
+│       └── index.ts             # Player, Team, Position interfaces
+├── public/                      # Static files
+├── node_modules/                # Dependencies (not tracked in git)
+├── .next/                       # Next.js build output (not tracked in git)
+├── next.config.js               # Next.js configuration
+├── next-env.d.ts                # Next.js TypeScript declarations
+├── tailwind.config.js           # Tailwind CSS configuration
+├── postcss.config.mjs           # PostCSS configuration
+├── tsconfig.json                # TypeScript configuration
+├── package.json                 # Project dependencies
+├── package-lock.json            # Dependency lock file
+└── README.md                    # Project documentation
