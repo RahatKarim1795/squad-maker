@@ -3,21 +3,21 @@ import { Player } from '@/types';
 export const players: Player[] = [
   {
     id: '1',
-    name: 'Ahmed',
-    positions: ['Goalkeeper'],
-    rating: 8
+    name: 'Abrar',
+    positions: ['Midfielder','Forward'],
+    rating: 9.0
   },
   {
     id: '2',
-    name: 'Mohamed',
-    positions: ['Defender'],
-    rating: 7
+    name: 'Alvi',
+    positions: ['Forward'],
+    rating: 9.0
   },
   {
     id: '3',
-    name: 'Ali',
-    positions: ['Defender'],
-    rating: 6
+    name: 'Jabir',
+    positions: ['Goalkeeper'],
+    rating: 7.0
   },
   {
     id: '4',

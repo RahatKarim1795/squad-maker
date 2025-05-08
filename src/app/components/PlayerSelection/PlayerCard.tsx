@@ -1,7 +1,6 @@
 'use client';
 
 import { Player } from '@/types';
-import { useState } from 'react';
 
 interface PlayerCardProps {
   player: Player;
@@ -9,11 +8,10 @@ interface PlayerCardProps {
 }
 
 const PlayerCard = ({ player, onSelect }: PlayerCardProps) => {
-  const [isSelected, setIsSelected] = useState(player.isSelected || false);
+  const isSelected = player.isSelected || false;
   
   const handleToggle = () => {
     const newValue = !isSelected;
-    setIsSelected(newValue);
     onSelect(player.id, newValue);
   };
   

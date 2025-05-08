@@ -1,0 +1,4 @@
+1. Equal number of players per team
+2. Equal number of players per position in each team (when possible)
+3. Similar average rating for both teams as much as possible
+4. Each team must have atleast 1 gk, if available from player selected
