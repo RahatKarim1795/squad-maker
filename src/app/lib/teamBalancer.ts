@@ -30,7 +30,10 @@ export function balanceTeams(selectedPlayers: Player[]): [Team, Team] {
   // For each player, assign to their primary position (the position with fewest players)
   selectedPlayers.forEach(player => {
     if (player.positions.length === 1) {
-      playersByPosition[player.positions[0]].push(player);
+      playersByPosition[player.positions[0]].push({
+        ...player,
+        assignedPosition: player.positions[0]
+      });
     } else {
       // Find the position with the fewest players
       let fewestPosition = player.positions[0];
@@ -43,7 +46,10 @@ export function balanceTeams(selectedPlayers: Player[]): [Team, Team] {
         }
       }
       
-      playersByPosition[fewestPosition].push(player);
+      playersByPosition[fewestPosition].push({
+        ...player,
+        assignedPosition: fewestPosition
+      });
     }
   });
   

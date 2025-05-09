@@ -7,6 +7,7 @@ export interface Player {
   rating: number;
   isSelected?: boolean;
   isGuest?: boolean;
+  assignedPosition?: Position;
 }
 
 export interface Team {

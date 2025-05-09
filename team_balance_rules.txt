@@ -2,3 +2,7 @@
 2. Equal number of players per position in each team (when possible)
 3. Similar average rating for both teams as much as possible
 4. Each team must have atleast 1 gk, if available from player selected
+5. Consider database players before guests when fixing positions
+6. Selection criteria priority: number of players -> position -> rating
+7. Each player can have multiple positions but consider the first position in their array to be prioroty position. choose second only to balance
+8. Team colors: Team A- red/white Team B- black/blue
